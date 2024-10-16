@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebGIS 360 Photo</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Pintasan -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="../../index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-toggle="modal" data-target="#petunjukPenggunaan">
+                    Petunjuk
+                </a>                
+            </li>
+            <li class="nav-item dropdown">
+                <!--<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Jenis resiko
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="../storymapbanjir/index.html">Banjir</a>
+                    <a class="dropdown-item" href="../storymaplongsor/index.html">Tanah Longsor</a>
+                </div> -->
+            </li>
+        </ul>
+    </div>
+</nav>
+
+  <!-- Map -->
+  <div id="map"></div>
+
+  <!-- Info Container -->
+  <div id="info-container" class="border">
+    <div class="jumbotron" style="background-color: #ffffff; border: none;">
+      <h5>KONDISI EXISTING KAWASAN SEKITAR SUNGAI CODE</h5>
+    </div>
+    <div id="location-info" class="container-fluid">
+      <!-- Deskripsi akan ditampilkan di sini -->
+    </div>
+  </div>
+
+  <!-- Modal Petunjuk -->
+<div class="modal fade bd-example-modal-lg" id="petunjukPenggunaan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Petunjuk Penggunaan WebGIS</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul style="list-style-type: decimal;">
+                    <li>Lakukan zoom in atau zoom out dengan cara scrolling pada muka peta atau klik ikon zoom di pojok kiri atas tampilan peta.</li>
+                    <li>Geser (panning) muka peta dengan cara klik kiri atau kanan pada mouse, kemudian tahan, dan gerakkan mouse ke arah yang diinginkan.</li>
+                    <li>Klik kiri pada titik marker di peta untuk membuka jendela informasi serta menampilkan media, baik berupa gambar maupun foto sferis 360&deg;.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <p>&copy; Kelompok 5 PRGG 2024</p>
+  </div>
+
+  <!-- Basemap Switcher Button -->
+  <button id="basemapButton">Ganti Basemap</button>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="banjir2.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
