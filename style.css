@@ -129,7 +129,9 @@ body {
 .next-point-arrow {
     position: relative;
 }
-
+.prev-point-arrow {
+    position: relative;
+}
 .next-point-arrow::after {
     content: attr(title);
     position: absolute;
@@ -146,5 +148,23 @@ body {
 }
 
 .next-point-arrow:hover::after {
+    display: block; /* Tampilkan tooltip saat hover */
+}
+.prev-point-arrow::after {
+    content: attr(title);
+    position: absolute;
+    left: 50%;
+    bottom: 100%; /* Menempatkan tooltip di atas gambar panah */
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    display: none; /* Sembunyikan tooltip secara default */
+    z-index: 1000;
+}
+
+.prev-point-arrow:hover::after {
     display: block; /* Tampilkan tooltip saat hover */
 }

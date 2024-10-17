@@ -50,6 +50,9 @@ function onEachFeature(feature, layer) {
           <img class="next-point-arrow" data-next="${feature.properties.next_id}" 
               src="https://raw.githubusercontent.com/sintaalfirm/WebServiceSungaiCode/refs/heads/main/icons8-upward-arrow-64.png" 
               style="width: 40px; cursor: pointer;" alt="Next">
+        <img class="prev-point-arrow" data-prev="${feature.properties.prev_id}" 
+              src="https://raw.githubusercontent.com/sintaalfirm/WebServiceSungaiCode/refs/heads/main/icons8-upward-arrow-64.png" 
+              style="width: 40px; cursor: pointer; transform: rotate(180deg);" alt="Prev">
       </div>
   `;
 
@@ -60,7 +63,7 @@ function onEachFeature(feature, layer) {
     $('#location-info').html(`
         <h6><strong>Titik ${feature.properties.name}</strong></h6>
         <p>${feature.properties.description}</p>
-        <img src="${feature.properties.foto}" 
+        <img src="${feature.properties.flickr}" 
              style="width: 100%; height: auto; margin-top: 10px; object-fit:cover;">
     `);
 });
@@ -79,7 +82,22 @@ $(document).on('mouseenter', '.next-point-arrow', function () {
     $(this).removeAttr('title');
 });
 
-// Event listener untuk klik
+// Event listener untuk navigasi ke titik sebelumnya
+$(document).on('mouseenter', '.prev-point-arrow', function () {
+    var prevId = $(this).data('prev'); // Mengambil data-prev dari elemen img
+    var prevFeature = banjirjson.features.find(f => f.properties.id == prevId);
+    if (prevFeature) {
+        // Tampilkan tooltip dengan nama titik sebelumnya
+        $(this).attr('title', `Kembali ke titik ${prevFeature.properties.name}`);
+    }
+}).on('mouseleave', '.prev-point-arrow', function () {
+    // Hapus tooltip saat mouse keluar
+    $(this).removeAttr('title');
+});
+
+
+         
+// Event listener untuk klik titik selanjutnya
 $(document).on('click', '.next-point-arrow', function (e) {
     e.preventDefault();
     var nextId = $(this).data('next'); // Mengambil data-next dari elemen img
@@ -108,6 +126,9 @@ $(document).on('click', '.next-point-arrow', function (e) {
             </div>
             <br>
             <div style="text-align:center;">
+                <img class="prev-point-arrow" data-prev="${nextFeature.properties.prev_id}" 
+                     src="https://raw.githubusercontent.com/sintaalfirm/WebServiceSungaiCode/refs/heads/main/icons8-upward-arrow-64.png" 
+                     style="width: 40px; cursor: pointer; transform: rotate(180deg);" alt="Prev">
                 <img class="next-point-arrow" data-next="${nextFeature.properties.next_id}" 
                      src="https://raw.githubusercontent.com/sintaalfirm/WebServiceSungaiCode/refs/heads/main/icons8-upward-arrow-64.png" 
                      style="width: 40px; cursor: pointer;" alt="Next">
@@ -127,7 +148,63 @@ $(document).on('click', '.next-point-arrow', function (e) {
         $('#location-info').html(`
             <h6><strong>Titik ${nextFeature.properties.name}</strong></h6>
             <p>${nextFeature.properties.description}</p>
-            <img src="${nextFeature.properties.foto}" alt="Foto Titik" style="max-width: 100%; height: auto;">
+            <img src="${nextFeature.properties.flickr}" alt="Foto Titik" style="max-width: 100%; height: auto;">
+        `);
+    }
+});
+
+// Event listener untuk klik titik sebelumnya
+$(document).on('click', '.prev-point-arrow', function (e) {
+    e.preventDefault();
+    var prevId = $(this).data('prev'); // Mengambil data-prev dari elemen img
+    var prevFeature = banjirjson.features.find(f => f.properties.id == prevId);
+
+    if (prevFeature) {
+        // Render popup baru untuk titik sebelumnya
+        var isIframe = prevFeature.properties.photo360.includes("momento360");
+        var prevPopup = `
+            <h5>${prevFeature.properties.name}</h5>
+            <div style="text-align: center;">`;
+
+        if (isIframe) {
+            prevPopup += `
+                <iframe src="${prevFeature.properties.photo360}" 
+                        width="300" height="250" 
+                        style="border:none; display:block; margin:0 auto;"></iframe>`;
+        } else {
+            prevPopup += `
+                <img src="${prevFeature.properties.photo360}" 
+                     width="300" height="250" 
+                     style="object-fit:cover; display:block; margin:0 auto; max-width:300px;">`;
+        }
+
+        prevPopup += `
+            </div>
+            <br>
+            <div style="text-align:center;">
+                <img class="prev-point-arrow" data-prev="${prevFeature.properties.prev_id}" 
+                     src="https://raw.githubusercontent.com/sintaalfirm/WebServiceSungaiCode/refs/heads/main/icons8-upward-arrow-64.png" 
+                     style="width: 40px; cursor: pointer; transform: rotate(180deg);" alt="Prev">
+                <img class="next-point-arrow" data-next="${prevFeature.properties.next_id}" 
+                     src="https://raw.githubusercontent.com/sintaalfirm/WebServiceSungaiCode/refs/heads/main/icons8-upward-arrow-64.png" 
+                     style="width: 40px; cursor: pointer;" alt="Next">
+            </div>
+        `;
+
+        // Set map view to the previous feature's coordinates
+        map.setView([prevFeature.geometry.coordinates[1], prevFeature.geometry.coordinates[0]], 18);
+
+        // Open the popup for the previous point
+        L.popup()
+            .setLatLng([prevFeature.geometry.coordinates[1], prevFeature.geometry.coordinates[0]])
+            .setContent(prevPopup)
+            .openOn(map);
+
+        // Perbarui deskripsi di panel samping
+        $('#location-info').html(`
+            <h6><strong>Titik ${prevFeature.properties.name}</strong></h6>
+            <p>${prevFeature.properties.description}</p>
+            <img src="${prevFeature.properties.flickr}" alt="Foto Titik" style="max-width: 100%; height: auto;">
         `);
     }
 });
